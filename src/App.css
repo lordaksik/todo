@@ -12,3 +12,10 @@
   border-bottom: black 1px solid;
   text-align: center;
 }
+.addInList{
+  margin: 2px 10px;
+}
+.addInList input{
+  width: 78%;
+  margin-right: 5px;
+}
