@@ -1,33 +1,40 @@
 import './App.css';
 import {useState} from "react";
 
-const lists = [];
+const lists = [{
+    id: 0,
+    text: 'Планы на завтра'
+}];
 var nameTable = 'Список задач'
-
-function ElementList({todos}) {
-    const liElement = todos.map(list => (
-        <li key={list.id}>
-            {list.text}
-        </li>
-    ))
-    return (<ol>{liElement}</ol>)
-}
-
-function ButtonAddElemnt({setText}, {setTodos}, {todos}, {text}) {
-    return (<button onClick={() => {
-        setText('');
-        setTodos([{
-            id: todos.length,
-            text: text
-        }, ...todos]);
-    }} className='inputFieldButton'>Создать
-    </button>)
-}
 
 export default function App() {
 
     const [todos, setTodos] = useState(lists);
     const [text, setText] = useState('');
+    let nextId = todos.length
+
+    function deleteElement(todoId) {
+        setTodos(
+            todos.filter(t => t.id !== todoId)
+        );
+    }
+
+    function ElementList({todos}) {
+        const liElement = todos.map(list => (
+            <li key={list.id}>
+                {list.text}
+                <span className='elementButton'>
+                <button className='editElement'>
+                    Ред.
+                </button>
+                <button className='deliteElement' onClick={() => deleteElement(list.id)}>
+                    X
+                </button>
+            </span>
+            </li>
+        ))
+        return (<ol reversed>{liElement}</ol>)
+    }
 
     return (
         <div className='toDoList'>
@@ -36,9 +43,10 @@ export default function App() {
                                               onChange={e => setText(e.target.value)}
                                               className='inputField' type='text'/>
                 <button onClick={() => {
+                    console.log(todos)
                     setText('');
                     setTodos([{
-                        id: todos.length,
+                        id: nextId++,
                         text: text
                     }, ...todos]);
                 }} className='inputFieldButton'>Создать
