@@ -1,5 +1,7 @@
 import './App.css';
 import {useState} from "react";
+import deleteIkon from './delete.png';
+import editIkon from './edit.png';
 
 const lists = [{
     id: 0,
@@ -25,10 +27,10 @@ export default function App() {
                 {list.text}
                 <span className='elementButton'>
                 <button className='editElement'>
-                    Ред.
+             <img src={editIkon}></img>
                 </button>
-                <button className='deliteElement' onClick={() => deleteElement(list.id)}>
-                    X
+                <button className='deleteElement' onClick={() => deleteElement(list.id)}>
+                    <img src={deleteIkon}></img>
                 </button>
             </span>
             </li>

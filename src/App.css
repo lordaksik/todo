@@ -22,3 +22,19 @@
 .elementButton{
 
 }
+.deleteElement{
+height:30px;
+  margin:5px;
+}
+.deleteElement img{
+  height:100%;
+  width:100%
+}
+.editElement{
+height:30px;
+  margin:5px;
+}
+.editElement img{
+  height:100%;
+  width:100%
+}
