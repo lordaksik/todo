@@ -5,7 +5,11 @@ import editIkon from './edit.png';
 
 const lists = [{
     id: 0,
-    text: 'Планы на завтра'
+    text: 'Планы на завтра',
+    list: {
+        id: 0,
+        text: 'Завтрак',
+    }
 }];
 
 var nameTable = 'Список задач'
@@ -14,6 +18,8 @@ export default function App() {
 
     const [todos, setTodos] = useState(lists);
     const [text, setText] = useState('');
+    const [list, setList] = useState(true);
+    const [listName, setListName] = useState('');
     let nextId = todos.length
 
     function deleteElement(todoId) {
@@ -31,6 +37,13 @@ export default function App() {
             </li>
         ))
         return (<ol reversed>{liElement}</ol>)
+    }
+
+    function List() {
+        return (<div className='toDoList'>
+            <h1>{listName}</h1>
+            <button onClick={() => setList(true)}>Назад</button>
+        </div>)
     }
 
     function ElementButton({element}) {
@@ -64,7 +77,10 @@ export default function App() {
         }
         return (
             <>
-                {liText}
+                <a href='#' onClick={() => {
+                    setList(false)
+                    setListName(liText)
+                }}>{liText}</a>
                 <span className='elementButton'>
                 {todoContent}
                     <button className='deleteElement' onClick={() => deleteElement(element.id)}>
@@ -75,24 +91,31 @@ export default function App() {
         );
     }
 
-    return (
-        <div className='toDoList'>
-            <h1>{nameTable}</h1>
-            <div className='addInList'><input alt='' value={text}
-                                              onChange={e => setText(e.target.value)}
-                                              className='inputField' type='text'/>
-                <button  onClick={() => {
-                    setText('');
-                    setTodos([{
-                        id: nextId++,
-                        text: text
-                    }, ...todos]);
-                }} className='inputFieldButton'>Создать
-                </button>
+    if (list) {
+        return (
+            <div className='toDoList'>
+                <h1>{nameTable}</h1>
+                <div className='addInList'><input alt='' value={text}
+                                                  onChange={e => setText(e.target.value)}
+                                                  className='inputField' type='text'/>
+                    <button onClick={() => {
+                        setText('');
+                        setTodos([{
+                            id: nextId++,
+                            text: text,
+                            list: {}
+                        }, ...todos]);
+                    }} className='inputFieldButton'>Создать
+                    </button>
+                </div>
+                <ElementList todos={todos}/>
             </div>
-            <ElementList todos={todos}/>
-        </div>
-    );
+        );
+    } else {
+        return (
+            <List/>
+        )
+    }
 }
 
 
