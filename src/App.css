@@ -1,40 +1,52 @@
 .App {
-  text-align: center;
+    text-align: center;
 }
 
-.toDoList{
-  border: 1px solid black;
-  height: 700px;
-  width: 400px;
-  margin: 40px auto 0 auto;
+.toDoList {
+    border: 1px solid black;
+    height: 700px;
+    width: 400px;
+    margin: 40px auto 0 auto;
 }
-.toDoList h1{
-  border-bottom: black 1px solid;
-  text-align: center;
+
+.toDoList h1 {
+    border-bottom: black 1px solid;
+    text-align: center;
 }
-.addInList{
-  margin: 2px 10px;
+
+.addInList {
+    margin: 2px 10px;
 }
-.addInList input{
-  width: 78%;
-  margin-right: 5px;
+
+.addInList input {
+    width: 78%;
+    margin-right: 5px;
 }
-.elementButton{
+
+.elementButton {
 
 }
-.deleteElement{
-height:30px;
-  margin:5px;
+
+.deleteElement {
+    height: 30px;
+    margin: 5px;
 }
-.deleteElement img{
-  height:100%;
-  width:100%
+
+.deleteElement img {
+    height: 100%;
+    width: 100%
 }
-.editElement{
-height:30px;
-  margin:5px;
+
+.editElement {
+    height: 30px;
+    margin: 5px;
 }
-.editElement img{
-  height:100%;
-  width:100%
+
+.editElement img {
+    height: 100%;
+    width: 100%
+}
+
+.notEditElement{
+  cursor: pointer;
 }

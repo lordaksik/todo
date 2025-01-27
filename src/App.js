@@ -73,14 +73,15 @@ export default function App() {
                     <img alt='edit Ikon' src={editIkon}></img>
                 </button>
             );
-            liText = textLi
+            liText = (
+                <span className='notEditElement' onClick={() => {
+                setList(false)
+                setListName(textLi)
+            }}>{textLi}</span>)
         }
         return (
             <>
-                <a href='#' onClick={() => {
-                    setList(false)
-                    setListName(liText)
-                }}>{liText}</a>
+                {liText}
                 <span className='elementButton'>
                 {todoContent}
                     <button className='deleteElement' onClick={() => deleteElement(element.id)}>
@@ -100,11 +101,12 @@ export default function App() {
                                                   className='inputField' type='text'/>
                     <button onClick={() => {
                         setText('');
+                        if (text!==''){
                         setTodos([{
                             id: nextId++,
                             text: text,
                             list: {}
-                        }, ...todos]);
+                        }, ...todos]);}
                     }} className='inputFieldButton'>Создать
                     </button>
                 </div>
