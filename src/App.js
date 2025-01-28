@@ -6,18 +6,19 @@ import editIkon from './edit.png';
 const lists = [{
     id: 0,
     text: 'Планы на завтра',
-    list: {
+    list: [{
         id: 0,
         text: 'Завтрак',
-    }
+    }]
 }];
 
-var nameTable = 'Список задач'
+let nameTable = 'Список задач'
 
 export default function App() {
 
     const [todos, setTodos] = useState(lists);
     const [text, setText] = useState('');
+    const [listState, setListState] = useState(true);
     const [list, setList] = useState(true);
     const [listName, setListName] = useState('');
     let nextId = todos.length
@@ -42,8 +43,10 @@ export default function App() {
     function List() {
         return (<div className='toDoList'>
             <h1>{listName}</h1>
-            <button onClick={() => setList(true)}>Назад</button>
-        </div>)
+            <button onClick={() => setListState(true)}>Назад</button>
+                <ElementList todos={todos[0].list}/>
+        </div>
+        )
     }
 
     function ElementButton({element}) {
@@ -75,7 +78,7 @@ export default function App() {
             );
             liText = (
                 <span className='notEditElement' onClick={() => {
-                setList(false)
+                    setListState(false)
                 setListName(textLi)
             }}>{textLi}</span>)
         }
@@ -92,7 +95,7 @@ export default function App() {
         );
     }
 
-    if (list) {
+    if (listState) {
         return (
             <div className='toDoList'>
                 <h1>{nameTable}</h1>
