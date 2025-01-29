@@ -19,7 +19,7 @@ export default function App() {
     const [todos, setTodos] = useState(lists);
     const [text, setText] = useState('');
     const [listState, setListState] = useState(true);
-    const [list, setList] = useState(true);
+    const [list, setList] = useState('');
     const [listName, setListName] = useState('');
     let nextId = todos.length
 
@@ -31,7 +31,7 @@ export default function App() {
 
 
     function ElementList({todos}) {
-
+        console.log(todos)
         const liElement = todos.map(list => (
             <li key={list.id}>
                 <ElementButton element={list}/>
@@ -42,10 +42,10 @@ export default function App() {
 
     function List() {
         return (<div className='toDoList'>
-            <h1>{listName}</h1>
-            <button onClick={() => setListState(true)}>Назад</button>
-                <ElementList todos={todos[0].list}/>
-        </div>
+                <h1>{listName}</h1>
+                <button onClick={() => setListState(true)}>Назад</button>
+                <ElementList todos={list}/>
+            </div>
         )
     }
 
@@ -79,8 +79,9 @@ export default function App() {
             liText = (
                 <span className='notEditElement' onClick={() => {
                     setListState(false)
-                setListName(textLi)
-            }}>{textLi}</span>)
+                    setListName(textLi)
+                    setList(element.list)
+                }}>{textLi}</span>)
         }
         return (
             <>
@@ -104,12 +105,13 @@ export default function App() {
                                                   className='inputField' type='text'/>
                     <button onClick={() => {
                         setText('');
-                        if (text!==''){
-                        setTodos([{
-                            id: nextId++,
-                            text: text,
-                            list: {}
-                        }, ...todos]);}
+                        if (text !== '') {
+                            setTodos([{
+                                id: nextId++,
+                                text: text,
+                                list: [{}]
+                            }, ...todos]);
+                        }
                     }} className='inputFieldButton'>Создать
                     </button>
                 </div>
