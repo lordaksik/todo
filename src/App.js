@@ -17,11 +17,13 @@ let nameTable = 'Список задач'
 export default function App() {
 
     const [todos, setTodos] = useState(lists);
-    const [text, setText] = useState('');
+    const [textTodo, setTextTodo] = useState('');
     const [listState, setListState] = useState(true);
     const [list, setList] = useState('');
+    const [textList, setTextList] = useState('');
     const [listName, setListName] = useState('');
-    let nextId = todos.length
+    let nextId = list.length
+    let nextIdTodo = todos.length
 
     function deleteElement(todoId) {
         setTodos(
@@ -30,23 +32,14 @@ export default function App() {
     }
 
 
-    function ElementList({todos}) {
-        console.log(todos)
+    function ElementTodo({todos}) {
+
         const liElement = todos.map(list => (
             <li key={list.id}>
                 <ElementButton element={list}/>
             </li>
         ))
         return (<ol reversed>{liElement}</ol>)
-    }
-
-    function List() {
-        return (<div className='toDoList'>
-                <h1>{listName}</h1>
-                <button onClick={() => setListState(true)}>Назад</button>
-                <ElementList todos={list}/>
-            </div>
-        )
     }
 
     function ElementButton({element}) {
@@ -76,11 +69,13 @@ export default function App() {
                     <img alt='edit Ikon' src={editIkon}></img>
                 </button>
             );
+
             liText = (
                 <span className='notEditElement' onClick={() => {
+                    if (listState){
                     setListState(false)
                     setListName(textLi)
-                    setList(element.list)
+                    setList(element.list)}
                 }}>{textLi}</span>)
         }
         return (
@@ -100,27 +95,49 @@ export default function App() {
         return (
             <div className='toDoList'>
                 <h1>{nameTable}</h1>
-                <div className='addInList'><input alt='' value={text}
-                                                  onChange={e => setText(e.target.value)}
+                <div className='addInList'><input alt='' value={textTodo}
+                                                  onChange={e => setTextTodo(e.target.value)}
                                                   className='inputField' type='text'/>
                     <button onClick={() => {
-                        setText('');
-                        if (text !== '') {
+                        setTextTodo('');
+                        if (textTodo !== '') {
                             setTodos([{
-                                id: nextId++,
-                                text: text,
-                                list: [{}]
+                                id: nextIdTodo++,
+                                text: textTodo,
+                                list: []
                             }, ...todos]);
                         }
                     }} className='inputFieldButton'>Создать
                     </button>
                 </div>
-                <ElementList todos={todos}/>
+                <ElementTodo todos={todos}/>
             </div>
         );
     } else {
+
         return (
-            <List/>
+            <div className='toDoList'>
+                <h1>{listName}</h1>
+                <div className='addInList'><input alt='' value={textList}
+                                                  onChange={e => setTextList(e.target.value)}
+                                                  className='inputField' type='text'/>
+                    <button onClick={() => {
+                        setTextList('');
+                        if (textList !== '') {
+                            setList([{
+                                id: nextId++,
+                                text: textList,
+                            }, ...list]);
+                        }
+                    }} className='inputFieldButton'>Создать
+                    </button>
+                </div>
+                <button onClick={() => {setListState(true)
+                      todos[todos.length-1].list=list
+                    console.log(todos)
+                }}>Назад</button>
+                <ElementTodo todos={list}/>
+            </div>
         )
     }
 }
