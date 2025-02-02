@@ -1,5 +1,5 @@
 import './App.css';
-import {useState} from "react";
+import { useState } from "react";
 import deleteIkon from './delete.png';
 import editIkon from './edit.png';
 
@@ -9,7 +9,8 @@ const lists = [{
     list: [{
         id: 0,
         text: 'Завтрак',
-    }]
+    }],
+    lastIdList: 1
 }];
 
 let nameTable = 'Список задач'
@@ -22,27 +23,35 @@ export default function App() {
     const [list, setList] = useState('');
     const [textList, setTextList] = useState('');
     const [listName, setListName] = useState('');
+    const [listIdNow, setListIdNow] = useState('');
+    const [listId, setListId] = useState(1);
+    const [todoId, setTodoId] = useState(1);
+
     let nextId = list.length
-    let nextIdTodo = todos.length
+    let nextIdTodo = 1
 
     function deleteElement(todoId) {
-        setTodos(
-            todos.filter(t => t.id !== todoId)
-        );
+        if (listState) {
+            setTodos(
+                todos.filter(t => t.id !== todoId)
+            );
+        } else {
+            setList(list.filter(t => t.id !== todoId));
+        }
     }
 
 
-    function ElementTodo({todos}) {
+    function ElementTodo({ todos }) {
 
         const liElement = todos.map(list => (
             <li key={list.id}>
-                <ElementButton element={list}/>
+                <ElementButton element={list} />
             </li>
         ))
-        return (<ol reversed>{liElement}</ol>)
+        return (<ol>{liElement}</ol>)
     }
 
-    function ElementButton({element}) {
+    function ElementButton({ element }) {
         const [isEditing, setIsEditing] = useState(false);
         const [textLi, setTextLi] = useState(element.text);
         let todoContent, liText;
@@ -50,8 +59,8 @@ export default function App() {
         if (isEditing) {
             liText = (
                 <input value={textLi}
-                       onChange={e => setTextLi(e.target.value)}
-                       className='inputLiElement' type='text'/>
+                    onChange={e => setTextLi(e.target.value)}
+                    className='inputLiElement' type='text' />
             )
             todoContent = (
                 <button className='editElement' onClick={() => {
@@ -72,21 +81,25 @@ export default function App() {
 
             liText = (
                 <span className='notEditElement' onClick={() => {
-                    if (listState){
-                    setListState(false)
-                    setListName(textLi)
-                    setList(element.list)}
+                    if (listState) {
+                        setListState(false)
+                        setListName(textLi)
+                        setList(element.list)
+                        setListIdNow(element.id)
+                        setListId(element.lastIdList)
+
+                    }
                 }}>{textLi}</span>)
         }
         return (
             <>
                 {liText}
                 <span className='elementButton'>
-                {todoContent}
+                    {todoContent}
                     <button className='deleteElement' onClick={() => deleteElement(element.id)}>
-                    <img alt='delete Ikon' src={deleteIkon}></img>
-                </button>
-            </span>
+                        <img alt='delete Ikon' src={deleteIkon}></img>
+                    </button>
+                </span>
             </>
         );
     }
@@ -96,21 +109,23 @@ export default function App() {
             <div className='toDoList'>
                 <h1>{nameTable}</h1>
                 <div className='addInList'><input alt='' value={textTodo}
-                                                  onChange={e => setTextTodo(e.target.value)}
-                                                  className='inputField' type='text'/>
+                    onChange={e => setTextTodo(e.target.value)}
+                    className='inputField' type='text' />
                     <button onClick={() => {
                         setTextTodo('');
                         if (textTodo !== '') {
-                            setTodos([{
-                                id: nextIdTodo++,
+                            setTodos([...todos, {
+                                id: todoId,
                                 text: textTodo,
-                                list: []
-                            }, ...todos]);
+                                list: [],
+                                lastIdList: 1
+                            }]);
+                            setTodoId(todoId + 1)
                         }
                     }} className='inputFieldButton'>Создать
                     </button>
                 </div>
-                <ElementTodo todos={todos}/>
+                <ElementTodo todos={todos} />
             </div>
         );
     } else {
@@ -119,24 +134,27 @@ export default function App() {
             <div className='toDoList'>
                 <h1>{listName}</h1>
                 <div className='addInList'><input alt='' value={textList}
-                                                  onChange={e => setTextList(e.target.value)}
-                                                  className='inputField' type='text'/>
+                    onChange={e => setTextList(e.target.value)}
+                    className='inputField' type='text' />
                     <button onClick={() => {
                         setTextList('');
                         if (textList !== '') {
-                            setList([{
-                                id: nextId++,
+                            setList([...list, {
+                                id: listId,
                                 text: textList,
-                            }, ...list]);
+                            }]);
+                            setListId(listId + 1)
                         }
                     }} className='inputFieldButton'>Создать
                     </button>
                 </div>
-                <button onClick={() => {setListState(true)
-                      todos[todos.length-1].list=list
-                    console.log(todos)
+                <button onClick={() => {
+                    setListState(true)
+                    todos[listIdNow].list = list
+                    todos[listIdNow].lastIdList = listId
+
                 }}>Назад</button>
-                <ElementTodo todos={list}/>
+                <ElementTodo todos={list} />
             </div>
         )
     }
