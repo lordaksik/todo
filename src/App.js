@@ -1,5 +1,5 @@
 import './App.css';
-import { useState } from "react";
+import {useState} from "react";
 import deleteIkon from './delete.png';
 import editIkon from './edit.png';
 
@@ -27,9 +27,6 @@ export default function App() {
     const [listId, setListId] = useState(1);
     const [todoId, setTodoId] = useState(1);
 
-    let nextId = list.length
-    let nextIdTodo = 1
-
     function deleteElement(todoId) {
         if (listState) {
             setTodos(
@@ -41,17 +38,17 @@ export default function App() {
     }
 
 
-    function ElementTodo({ todos }) {
+    function ElementTodo({todos}) {
 
         const liElement = todos.map(list => (
             <li key={list.id}>
-                <ElementButton element={list} />
+                <ElementButton element={list}/>
             </li>
         ))
         return (<ol>{liElement}</ol>)
     }
 
-    function ElementButton({ element }) {
+    function ElementButton({element}) {
         const [isEditing, setIsEditing] = useState(false);
         const [textLi, setTextLi] = useState(element.text);
         let todoContent, liText;
@@ -59,8 +56,8 @@ export default function App() {
         if (isEditing) {
             liText = (
                 <input value={textLi}
-                    onChange={e => setTextLi(e.target.value)}
-                    className='inputLiElement' type='text' />
+                       onChange={e => setTextLi(e.target.value)}
+                       className='inputLiElement' type='text'/>
             )
             todoContent = (
                 <button className='editElement' onClick={() => {
@@ -104,28 +101,49 @@ export default function App() {
         );
     }
 
+    function listAdd() {
+        setTextList('');
+        if (textList !== '') {
+            setList([...list, {
+                id: listId,
+                text: textList,
+            }]);
+            setListId(listId + 1)
+        }
+    }
+
+    function todoAdd() {
+        setTextTodo('');
+        if (textTodo !== '') {
+            setTodos([...todos, {
+                id: todoId,
+                text: textTodo,
+                list: [],
+                lastIdList: 1
+            }]);
+            setTodoId(todoId + 1)
+        }
+    }
+
     if (listState) {
         return (
             <div className='toDoList'>
                 <h1>{nameTable}</h1>
-                <div className='addInList'><input alt='' value={textTodo}
-                    onChange={e => setTextTodo(e.target.value)}
-                    className='inputField' type='text' />
+                <div className='addInList'>
+                    <input alt='' value={textTodo}
+                           onChange={e => setTextTodo(e.target.value)}
+                           onKeyPress={e => {
+                               if (e.key === 'Enter') {
+                                   todoAdd()
+                               }
+                           }}
+                           className='inputField' type='text'/>
                     <button onClick={() => {
-                        setTextTodo('');
-                        if (textTodo !== '') {
-                            setTodos([...todos, {
-                                id: todoId,
-                                text: textTodo,
-                                list: [],
-                                lastIdList: 1
-                            }]);
-                            setTodoId(todoId + 1)
-                        }
+                        todoAdd()
                     }} className='inputFieldButton'>Создать
                     </button>
                 </div>
-                <ElementTodo todos={todos} />
+                <ElementTodo todos={todos}/>
             </div>
         );
     } else {
@@ -133,28 +151,27 @@ export default function App() {
         return (
             <div className='toDoList'>
                 <h1>{listName}</h1>
-                <div className='addInList'><input alt='' value={textList}
-                    onChange={e => setTextList(e.target.value)}
-                    className='inputField' type='text' />
+                <div className='addInList'>
+                    <input alt='' value={textList}
+                           onChange={e => setTextList(e.target.value)}
+                           onKeyPress={e => {
+                               if (e.key === 'Enter') {
+                                   listAdd()
+                               }
+                           }}
+                           className='inputField' type='text'/>
                     <button onClick={() => {
-                        setTextList('');
-                        if (textList !== '') {
-                            setList([...list, {
-                                id: listId,
-                                text: textList,
-                            }]);
-                            setListId(listId + 1)
-                        }
+                        listAdd()
                     }} className='inputFieldButton'>Создать
                     </button>
                 </div>
-                <button onClick={() => {
+                <button className='canselList' onClick={() => {
                     setListState(true)
                     todos[listIdNow].list = list
                     todos[listIdNow].lastIdList = listId
-
-                }}>Назад</button>
-                <ElementTodo todos={list} />
+                }}>Назад
+                </button>
+                <ElementTodo todos={list}/>
             </div>
         )
     }
