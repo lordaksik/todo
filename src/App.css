@@ -4,14 +4,20 @@
 
 .toDoList {
     border: 1px solid black;
-    height: 700px;
+    min-height: 500px;
     width: 400px;
     margin: 40px auto 0 auto;
+}
+
+.toDoList .fieldInfo {
+    overflow: auto;
+    height: 500px;
 }
 
 .toDoList h1 {
     border-bottom: black 1px solid;
     text-align: center;
+    overflow: hidden;
 }
 
 .addInList {
@@ -43,9 +49,10 @@
     width: 100%
 }
 
-.notEditElement{
-  cursor: pointer;
+.notEditElement {
+    cursor: pointer;
 }
-.canselList{
 
+.canselList {
+    margin: 5px 5px 5px 25px;
 }

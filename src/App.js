@@ -45,7 +45,7 @@ export default function App() {
                 <ElementButton element={list}/>
             </li>
         ))
-        return (<ol>{liElement}</ol>)
+        return (<ol className='fieldInfo'>{liElement}</ol>)
     }
 
     function ElementButton({element}) {
